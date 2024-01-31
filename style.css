@@ -1,0 +1,22 @@
+.board{
+    background-color:darksalmon;
+    border: 5px solid salmon;
+    display: grid;
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+    width: 500px;
+    height: 500px;
+    gap: 5px;
+    padding: 5px;
+}
+
+.cell{
+    background-color: darkblue;
+    color:darksalmon;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 2rem;
+    border: 2px solid darksalmon;
+    cursor: pointer;
+}
