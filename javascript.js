@@ -53,13 +53,15 @@ function gameController(){
         console.log(`This will Mark ${getActivePlayer().name}'s Symbol into Index ${index}...`);
         board.addMarker(index, getActivePlayer().marker)
 
-        /* if(!checkWinner(board.getBoard())){
+        if(!checkWinner(board.getBoard())){
             switchPlayer();
             printNewRound();
-        } */
+        }else{
+            console.log("there was a winner in the game controller");
+        }
 
-        switchPlayer();
-        printNewRound();
+        /* switchPlayer();
+        printNewRound(); */
     }
     const checkWinner = (board) => {
 
@@ -126,7 +128,12 @@ function displayController(){
         const board = game.getBoard();
         const activePlayer = game.getActivePlayer();
 
-        turn.textContent= `${activePlayer.name}'s Turn is Now;`
+        if(game.checkWinner(game.getBoard())){
+            turn.textContent=`${activePlayer.name} Wins the Game!`
+            boardDiv.removeEventListener("click", stampCell);
+        }else{
+            turn.textContent= `${activePlayer.name}'s Turn is Now`
+        }
 
         board.forEach((cell, index) =>{
             const cellButton = document.createElement("button");
@@ -147,6 +154,7 @@ function displayController(){
     }
 
     boardDiv.addEventListener("click", stampCell);
+
     createScreen();
 
     /* console.log("winner?...");
