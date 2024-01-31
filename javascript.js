@@ -3,6 +3,7 @@ function GameBoard(){
 
     const getBoard = () => board;
     const addMarker = (index, player) => {
+        //This is now checked in the UI
        // if (board[index].getValue() !== "null") return;
         board[index].stamp(player);
     }
@@ -33,9 +34,11 @@ function Cell(){
 
 
 function gameController(){
+    const p1Name = document.querySelector("#p1-name").value;
+    const p2Name = document.querySelector("#p2-name").value;
     const players = [
-        {name: "Exes", marker: "X"},
-        {name: "Ohhs", marker: "O"}
+        {name: p1Name === ""? "X": p1Name, marker: "X"},
+        {name: p1Name === ""? "O": p2Name, marker: "O"}
     ]
 
     const board = GameBoard();
@@ -50,7 +53,6 @@ function gameController(){
         console.log(`It is ${activePlayer.name} Turn`);
     }
     const playRound = (index) => {
-        console.log(`This will Mark ${getActivePlayer().name}'s Symbol into Index ${index}...`);
         board.addMarker(index, getActivePlayer().marker)
 
         if(!checkWinner(board.getBoard())){
@@ -59,9 +61,6 @@ function gameController(){
         }else{
             console.log("there was a winner in the game controller");
         }
-
-        /* switchPlayer();
-        printNewRound(); */
     }
     const checkWinner = (board) => {
 
@@ -101,6 +100,12 @@ function gameController(){
             return false;
         }
     }
+    const checkTie = (board) =>{
+        for (let i = 0; i<9; i++){
+            if (board[i].getValue() === null) {return false};
+        }
+        return true;
+    }
 
     printNewRound();
 
@@ -108,7 +113,8 @@ function gameController(){
         playRound,
         getActivePlayer,
         getBoard: board.getBoard,
-        checkWinner
+        checkWinner,
+        checkTie
     }
 }
 
@@ -128,11 +134,14 @@ function displayController(){
         const board = game.getBoard();
         const activePlayer = game.getActivePlayer();
 
-        if(game.checkWinner(game.getBoard())){
+        if(game.checkWinner(board)){
             turn.textContent=`${activePlayer.name} Wins the Game!`
             boardDiv.removeEventListener("click", stampCell);
+        }else if(game.checkTie(board)){
+            turn.textContent=`-~The Game was a Tie~-`;
+            boardDiv.removeEventListener("click", stampCell);
         }else{
-            turn.textContent= `${activePlayer.name}'s Turn is Now`
+            turn.textContent= `${activePlayer.name}'s Turn`
         }
 
         board.forEach((cell, index) =>{
@@ -156,14 +165,9 @@ function displayController(){
     boardDiv.addEventListener("click", stampCell);
 
     createScreen();
-
-    /* console.log("winner?...");
-    console.log(game.getBoard()[0].getValue());
-    console.log(game.checkWinner())
-    if (game.checkWinner()){
-        turn.textContent= "We Have a Winner!"
-    } */
-
 }
 
-const game = displayController();
+(function gatherGameInfo(){
+    const newGame = document.querySelector("#new-game");
+    newGame.addEventListener("click", displayController);
+})()
