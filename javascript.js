@@ -36,9 +36,16 @@ function Cell(){
 function gameController(){
     const p1Name = document.querySelector("#p1-name").value;
     const p2Name = document.querySelector("#p2-name").value;
+    let p1Marker = document.querySelector(`input[name="p1-icon"]:checked`).value;
+    if (p1Marker === "smiley"){
+        p1Marker = document.createElement("img");
+        p1Marker.src="./media/smiley.png"
+    }
+    let p2Marker = document.querySelector(`input[name="p2-icon"]:checked`).value;
+
     const players = [
-        {name: p1Name === ""? "X": p1Name, marker: "X"},
-        {name: p1Name === ""? "O": p2Name, marker: "O"}
+        {name: p1Name === ""? "Player 1": p1Name, marker: p1Marker},
+        {name: p1Name === ""? "Player 2": p2Name, marker: p2Marker}
     ]
 
     const board = GameBoard();
@@ -149,6 +156,7 @@ function displayController(){
             cellButton.classList.add("cell");
             cellButton.dataset.index = index;
             cellButton.textContent= cell.getValue();
+            console.log(cell.getValue());
             boardDiv.appendChild(cellButton);
         })
     }
