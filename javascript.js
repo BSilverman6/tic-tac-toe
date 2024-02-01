@@ -58,12 +58,9 @@ function gameController(){
             switchPlayer();
         }
 
-//AI TURN IS HERE
+        //AI TURN IS HERE
         if (p2AI&&aritificialInt(board.getBoard())!==undefined&&!checkWinner(board.getBoard())){
             board.addMarker(aritificialInt(board.getBoard()), getActivePlayer().marker);
-            if(checkWinner(board.getBoard())){
-                console.log("The Ai just won the game")
-            }
             if(!checkWinner(board.getBoard())){
                 switchPlayer();
             }
@@ -159,10 +156,14 @@ function displayController(){
             const cellButton = document.createElement("button");
             cellButton.classList.add("cell");
             cellButton.dataset.index = index;
-            if (cell.getValue() === "smiley"){
-                const smiles = document.createElement("img");
-                smiles.src="./media/smiley.png";
-                cellButton.appendChild(smiles);
+            console.log(cell.getValue());
+            if (cell.getValue() !== "X" &&cell.getValue() !== "O" && cell.getValue() !== null){
+                const image = document.createElement("img");
+                if (cell.getValue() === "smiley" || cell.getValue() === "frowny"){
+                    image.classList.add("filter-pinken");
+                }
+                image.src=`./media/${cell.getValue()}.png`;
+                cellButton.appendChild(image);
             }else{
                 cellButton.textContent= cell.getValue();
             }
@@ -180,6 +181,7 @@ function displayController(){
     }
 
     boardDiv.addEventListener("click", stampCell);
+
 
     createScreen();
 }

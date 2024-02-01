@@ -73,10 +73,16 @@ input[type=text]{
 
 img{
     width: 120px;
+}
+
+.filter-pinken{
     filter: invert(63%) sepia(54%) saturate(376%) hue-rotate(328deg) brightness(96%) contrast(90%);
 }
 
 .example{
     width: 25px;
+}
+
+.filter-bluen{
     filter: invert(10%) sepia(71%) saturate(6012%) hue-rotate(221deg) brightness(80%) contrast(187%);
 }
