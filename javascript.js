@@ -34,11 +34,13 @@ function gameController(){
     const p2Name = document.querySelector("#p2-name").value;
     const p1Marker = document.querySelector(`input[name="p1-icon"]:checked`).value;
     const p2Marker = document.querySelector(`input[name="p2-icon"]:checked`).value;
+
+    //DETERMINES if it is an AI game or not
     const p2AI = document.querySelector(`input[name="play-type"]:checked`).value === "h-v-h"? false: true;
 
     const players = [
         {name: p1Name === ""? "Player 1": p1Name, marker: p1Marker},
-        {name: p1Name === ""? "Player 2": p2Name, marker: p2Marker}
+        {name: p2Name === ""? "Player 2": p2Name, marker: p2Marker}
     ]
 
     const board = GameBoard();
@@ -59,6 +61,9 @@ function gameController(){
 //AI TURN IS HERE
         if (p2AI&&aritificialInt(board.getBoard())!==undefined&&!checkWinner(board.getBoard())){
             board.addMarker(aritificialInt(board.getBoard()), getActivePlayer().marker);
+            if(checkWinner(board.getBoard())){
+                console.log("The Ai just won the game")
+            }
             if(!checkWinner(board.getBoard())){
                 switchPlayer();
             }
