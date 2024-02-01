@@ -29,14 +29,12 @@ function Cell(){
     }
 }
 
-
-
-
 function gameController(){
     const p1Name = document.querySelector("#p1-name").value;
     const p2Name = document.querySelector("#p2-name").value;
     const p1Marker = document.querySelector(`input[name="p1-icon"]:checked`).value;
     const p2Marker = document.querySelector(`input[name="p2-icon"]:checked`).value;
+    const p2AI = document.querySelector(`input[name="play-type"]:checked`).value === "h-v-h"? false: true;
 
     const players = [
         {name: p1Name === ""? "Player 1": p1Name, marker: p1Marker},
@@ -56,6 +54,14 @@ function gameController(){
 
         if(!checkWinner(board.getBoard())){
             switchPlayer();
+        }
+
+//AI TURN IS HERE
+        if (p2AI&&aritificialInt(board.getBoard())!==undefined&&!checkWinner(board.getBoard())){
+            board.addMarker(aritificialInt(board.getBoard()), getActivePlayer().marker);
+            if(!checkWinner(board.getBoard())){
+                switchPlayer();
+            }
         }
     }
 
@@ -104,20 +110,24 @@ function gameController(){
         return true;
     }
 
+//RANDOM AI FUNCTION
+    function aritificialInt(board){
+        const emptySpot = [];
+        for (let i=0; i<9; i++){
+            if(board[i].getValue()===null) {emptySpot.push(i)};
+        }
+        return emptySpot[Math.floor((Math.random()*emptySpot.length))];
+    }
 
     return{
         playRound,
         getActivePlayer,
         getBoard: board.getBoard,
         checkWinner,
-        checkTie
+        checkTie,
     }
 }
 
-
-
-
-//const game = gameController();
 
 function displayController(){
     const game = gameController();
