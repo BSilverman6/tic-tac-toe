@@ -7,12 +7,11 @@ function GameBoard(){
        // if (board[index].getValue() !== "null") return;
         board[index].stamp(player);
     }
-    
-    const printBoard = () => {
-        console.log(board.map((cell)=>cell.getValue()));
-    }
 
-    return {getBoard, addMarker, printBoard};
+    return {
+        getBoard, 
+        addMarker
+    }
 }
 
 function Cell(){
@@ -36,12 +35,8 @@ function Cell(){
 function gameController(){
     const p1Name = document.querySelector("#p1-name").value;
     const p2Name = document.querySelector("#p2-name").value;
-    let p1Marker = document.querySelector(`input[name="p1-icon"]:checked`).value;
-    if (p1Marker === "smiley"){
-        p1Marker = document.createElement("img");
-        p1Marker.src="./media/smiley.png"
-    }
-    let p2Marker = document.querySelector(`input[name="p2-icon"]:checked`).value;
+    const p1Marker = document.querySelector(`input[name="p1-icon"]:checked`).value;
+    const p2Marker = document.querySelector(`input[name="p2-icon"]:checked`).value;
 
     const players = [
         {name: p1Name === ""? "Player 1": p1Name, marker: p1Marker},
@@ -55,20 +50,15 @@ function gameController(){
         activePlayer = activePlayer === players[0]? players[1]: players[0];
     }
     const getActivePlayer = () => activePlayer;
-    const printNewRound = () =>{
-        board.printBoard();
-        console.log(`It is ${activePlayer.name} Turn`);
-    }
+
     const playRound = (index) => {
         board.addMarker(index, getActivePlayer().marker)
 
         if(!checkWinner(board.getBoard())){
             switchPlayer();
-            printNewRound();
-        }else{
-            console.log("there was a winner in the game controller");
         }
     }
+
     const checkWinner = (board) => {
 
         if (board[0].getValue() === getActivePlayer().marker && 
@@ -114,7 +104,6 @@ function gameController(){
         return true;
     }
 
-    printNewRound();
 
     return{
         playRound,
@@ -155,16 +144,21 @@ function displayController(){
             const cellButton = document.createElement("button");
             cellButton.classList.add("cell");
             cellButton.dataset.index = index;
-            cellButton.textContent= cell.getValue();
-            console.log(cell.getValue());
-            boardDiv.appendChild(cellButton);
+            if (cell.getValue() === "smiley"){
+                const smiles = document.createElement("img");
+                smiles.src="./media/smiley.png";
+                cellButton.appendChild(smiles);
+            }else{
+                cellButton.textContent= cell.getValue();
+            }
+            boardDiv.appendChild(cellButton); 
         })
     }
 
     function stampCell (e) {
         const selectedCell = e.target.dataset.index;
         if (!selectedCell)return;
-        if (e.target.textContent !== "") return;
+        if (e.target.textContent !== "" || e.target.hasChildNodes()) return;
         game.playRound(selectedCell);
         createScreen();
         
